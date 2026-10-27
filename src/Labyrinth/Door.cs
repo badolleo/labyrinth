@@ -7,7 +7,7 @@ public class Door : Tile
 
     public Key Key { get; } = new Key();
 
-    public override void pass() {
+    public override void Pass() {
         if (!IsTraversable)
         {
             throw new InvalidOperationException("The door is closed");
