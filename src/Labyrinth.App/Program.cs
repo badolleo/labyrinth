@@ -1,13 +1,13 @@
-var lab = new Labyrinth.Labyrinth("""
+﻿using Labyrinth.Build;
+
+Console.WriteLine(new Labyrinth.Labyrinth(new AsciiParser("""
     +--+--------+
     |  /        |
     |  +--+--+  |
     |     |k    |
     +--+  |  +--+
-       |k |     |
+       |k  x    |
     +  +-------/|
     |           |
     +-----------+
-    """);
-    
-Console.WriteLine($"{lab.Width} x {lab.Height}"); 
+    """)));

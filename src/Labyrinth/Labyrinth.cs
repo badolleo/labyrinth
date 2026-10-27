@@ -1,60 +1,71 @@
-namespace Labyrinth;
+using Labyrinth.Build;
+using Labyrinth.Crawl;
+using Labyrinth.Tiles;
+using System.Text;
 
-public class Labyrinth
+namespace Labyrinth
 {
-
-    private readonly Tile[,] _tiles;
-
-    public int Width { get; }
-    public int Height { get; }
-
-    public Labyrinth(string map) 
+    public partial class Labyrinth
     {
-        string[] lines = map.Split("\n");
-        
-        Width = lines[0].Length;
-        Height = lines.Length;
-
-        _tiles = new Tile[Width, Height];
-
-        var keys = new Queue<Key>();
-        var keyRooms = new List<(int X, int Y)>();
-
-        for (int y = 0; y < Height; y++)
+        /// <summary>
+        /// Labyrinth with walls, doors and collectable items.
+        /// </summary>
+        /// <param name="builder">Builder used to create the labyrinth.</param>
+        /// <exception cref="ArgumentException">Thrown when string argument reveals inconsistent map sizes or characters with no starting position.</exception>
+        /// <exception cref="NotSupportedException">Thrown for multiple doors (resp. key locations) before key locations (resp. doors).</exception>
+        public Labyrinth(IBuilder builder)
         {
-            for (int x = 0; x < Width; x++)
+            _tiles = builder.Build(out _startPosition);
+            if (_tiles.GetLength(0) < 3 || _tiles.GetLength(1) < 3)
             {
-                switch (lines[y][x])
-                {
-                    case '+' or '-' or '|':
-                        _tiles[x, y] = new Wall();
-                        break;
-                    case ' ':
-                        _tiles[x, y] = new Room();
-                        break;
-                    case '/':
-                        var door = new Door();
-                        keys.Enqueue(door.Key);
-                        _tiles[x, y] = door;
-                        break;
-                    case 'k':
-                        keyRooms.Add((x, y));
-                        break;
-                    default:
-                        throw new ArgumentException($"Caractère inconnu : '{lines[y][x]}'");
-                }
+                throw new ArgumentException("Labyrinth must be at least 3x3");
+            }
+            if (_startPosition == IBuilder.InvalidPosition)
+            {
+                throw new ArgumentException("Labyrinth must have at least one starting position marked with x");
             }
         }
 
-        if (keys.Count != keyRooms.Count)
+        /// <summary>
+        /// Labyrinth width (number of columns).
+        /// </summary>
+        public int Width { get; private init; }
+
+        /// <summary>
+        /// Labyrinth height (number of rows).
+        /// </summary>
+        public int Height { get; private init; }
+
+        /// <summary>
+        /// An ascii representation of the labyrinth.
+        /// </summary>
+        /// <returns>Formatted string</returns>
+        public override string ToString() => ToString(_tiles);
+
+        public static string ToString(Tile[,] tiles)
         {
-            throw new ArgumentException(
-                $"Le plan contient {keys.Count} porte(s) mais {keyRooms.Count} clé(s)");
+            var res = new StringBuilder();
+
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                for (int x = 0; x < tiles.GetLength(0); x++)
+                {
+                    res.Append(tiles[x, y] switch
+                    {
+                        Room => ' ',
+                        Wall => '#',
+                        Door => '/',
+                        _ => throw new NotSupportedException("Unknown tile type")
+                    });
+                }
+                res.AppendLine();
+            }
+            return res.ToString();
         }
 
-        foreach (var (x, y) in keyRooms)
-        {
-            _tiles[x, y] = new Room(keys.Dequeue());
-        }
+        public ICrawler NewCrawler() => throw new NotImplementedException("To be implemented");
+
+        private readonly Tile[,] _tiles;
+        private (int, int) _startPosition;
     }
 }

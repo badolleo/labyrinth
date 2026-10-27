@@ -1,0 +1,49 @@
+using Labyrinth.Items;
+using Labyrinth.Tiles;
+
+namespace Labyrinth.Build
+{
+    /// <summary>
+    /// Build a labyrinth parsing an ascii map.
+    /// </summary>
+    /// <param name="ascii_map">A multiline string with '+', '-' or '|' for walls, '/' for doors, 'k' for key locations and x for starting position.</param>
+    public class AsciiParser(string ascii_map) : IBuilder
+    {
+        public Tile[,] Build(out (int, int) startPosition)
+        {
+            var lines = ascii_map.Split("\n,\r\n".Split(','), StringSplitOptions.None);
+            var width = lines[0].Length;
+            var tiles = new Tile[width, lines.Length];
+
+            using var km = new Keymaster();
+
+            startPosition = IBuilder.InvalidPosition;
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                if (lines[y].Length != width)
+                {
+                    throw new ArgumentException("Invalid map: all lines must have the same length.");
+                }
+                for (int x = 0; x < tiles.GetLength(0); x++)
+                {
+                    tiles[x, y] = lines[y][x] switch
+                    {
+                        'x' => NewStartPos(x, y, out startPosition),
+                        ' ' => new Room(),
+                        '+' or '-' or '|' => Wall.Singleton,
+                        '/' => km.NewDoor(),
+                        'k' => km.NewKeyRoom(),
+                        _ => throw new ArgumentException($"Invalid map: unknown character '{lines[y][x]}' at line {y}, col {x}.")
+                    };
+                }
+            }
+            return tiles;
+        }
+
+        private Room NewStartPos(int x, int y, out (int, int) startPosition)
+        {
+            startPosition = (x, y);
+            return new Room();
+        }
+    }
+}
