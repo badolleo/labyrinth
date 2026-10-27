@@ -4,6 +4,6 @@
     <Project Path="src/Labyrinth/Labyrinth.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/Labyrinth.Tests/Labyrinth.Tests.csproj" />
+    <Project Path="src/LabyrinthTest/LabyrinthTest.csproj" />
   </Folder>
 </Solution>

@@ -1,4 +1,4 @@
-﻿using Labyrinth.Build;
+using Labyrinth.Build;
 using Labyrinth.Crawl;
 using Labyrinth.Tiles;
 
@@ -16,6 +16,7 @@ public class LabyrinthCrawlerTest
                 | x|
                 +--+
                 """));
+
         var test = laby.NewCrawler();
 
         using var all = Assert.EnterMultipleScope();
