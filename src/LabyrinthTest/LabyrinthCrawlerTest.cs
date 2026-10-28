@@ -231,8 +231,6 @@ public class LabyrinthCrawlerTest
         {
             test.Walk();
         });
-        
-
     }
     #endregion
 
@@ -240,7 +238,15 @@ public class LabyrinthCrawlerTest
     [Test]
     public void WalkInARoomWithAnItem()
     {
-        Assert.That(false);
+        var test = newCrawlerFor("""
+            +--+
+            |k |
+            |x /
+            +--+
+            """);
+        
+        var inventory = test.Walk();
+        Assert.That(inventory.HasItem, Is.True);
     }
 
     [Test]
