@@ -7,7 +7,7 @@ namespace Labyrinth.Crawl
 {
     public class BaseCrawler : ICrawler
     {
-        public static Direction defaultDirection = Direction.North;
+        public static Direction defaultDirection => Direction.North;
 
         private readonly Tile[,] _tiles;
 
@@ -15,7 +15,7 @@ namespace Labyrinth.Crawl
         {
             X = x;
             Y = y;
-            Direction = (Direction)direction.Clone();
+            Direction = direction;
             _tiles = tiles;
         }
 

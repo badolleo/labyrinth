@@ -1,6 +1,7 @@
 using Labyrinth.Build;
 using Labyrinth.Crawl;
 using Labyrinth.Tiles;
+using Labyrinth.Items;
 
 namespace LabyrinthTest.Crawl;
 
@@ -179,7 +180,21 @@ public class LabyrinthCrawlerTest
     [Test]
     public void WalkReturnsInventoryAndChangesPositionAndFacingTile()
     {
-        Assert.That(false);
+        var test = newCrawlerFor("""
+            +--+
+            |  |
+            |x |
+            +--+
+            """);
+        
+
+        var inventory = test.Walk();
+
+        using var all = Assert.EnterMultipleScope();
+        Assert.That(test.X, Is.EqualTo(1));
+        Assert.That(test.Y, Is.EqualTo(1));
+        Assert.That(test.FacingTile, Is.TypeOf<Wall>());
+        Assert.That(inventory.HasItem, Is.False);
     }
 
     [Test]
