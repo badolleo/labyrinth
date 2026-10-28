@@ -23,7 +23,19 @@ namespace Labyrinth.Crawl
         public int Y { get; private set; }
         public Direction Direction { get; private set; }
 
-        public Tile FacingTile => _tiles[X + Direction.DeltaX, Y + Direction.DeltaY];
+        public Tile FacingTile
+        {
+            get
+            {
+                int facingY = Y + Direction.DeltaY;
+
+                if (facingY < 0)
+                {
+                    return Outside.Singleton;
+                }
+                return _tiles[X + Direction.DeltaX, facingY];
+            }
+        }
 
         public Inventory Walk()
         {
