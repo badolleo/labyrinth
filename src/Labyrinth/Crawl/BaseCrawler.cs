@@ -30,7 +30,7 @@ namespace Labyrinth.Crawl
                 int facingY = Y + Direction.DeltaY;
                 int facingX = X + Direction.DeltaX;
 
-                if (facingY < 0)
+                if (facingY < 0 || facingX < 0)
                 {
                     return Outside.Singleton;
                 }
