@@ -28,12 +28,13 @@ namespace Labyrinth.Crawl
             get
             {
                 int facingY = Y + Direction.DeltaY;
+                int facingX = X + Direction.DeltaX;
 
                 if (facingY < 0)
                 {
                     return Outside.Singleton;
                 }
-                return _tiles[X + Direction.DeltaX, facingY];
+                return _tiles[facingX, facingY];
             }
         }
 
