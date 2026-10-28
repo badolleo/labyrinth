@@ -2,12 +2,12 @@ using Labyrinth.Items;
 using Labyrinth.Tiles;
 
 
-
 namespace Labyrinth.Crawl
 {
     public class BaseCrawler : ICrawler
     {
         public static Direction defaultDirection => Direction.North;
+        public Inventory Inventory { get; } = new MyInventory();
 
         private readonly Tile[,] _tiles;
 
@@ -17,10 +17,13 @@ namespace Labyrinth.Crawl
             Y = y;
             Direction = direction;
             _tiles = tiles;
+            Inventory = new MyInventory();
         }
 
         public int X { get; private set; }
         public int Y { get; private set; }
+
+
         public Direction Direction { get; private set; }
 
         public Tile FacingTile
@@ -44,7 +47,13 @@ namespace Labyrinth.Crawl
             return inventory;
         }
 
-        private bool IsOutside(int x, int y) => x < 0 || y < 0 || x >= _tiles.GetLength(0) || y >= _tiles.GetLength(1);
+        public bool tryOpenDoor(Items.Inventory key)
+        {
+            throw new NotImplementedException();
+        }
 
+        private bool IsOutside(int x, int y) => x < 0 || y < 0 || x >= _tiles.GetLength(0) || y >= _tiles.GetLength(1);
+    
+    
     }
 }

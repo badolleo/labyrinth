@@ -18,6 +18,8 @@ namespace Labyrinth.Crawl
         /// </summary>
         int Y { get; }
 
+        Inventory Inventory { get; }
+
         /// <summary>
         /// Gets the current direction.
         /// </summary>
