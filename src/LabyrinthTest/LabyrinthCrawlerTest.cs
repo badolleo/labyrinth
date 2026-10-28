@@ -64,7 +64,12 @@ public class LabyrinthCrawlerTest
     [Test]
     public void FacingNorthOnUpperTileReturnsOutside()
     {
-        Assert.That(false);
+        var test = newCrawlerFor("""
+                +x-+
+                |  |
+                +--+
+                """);
+        Assert.That(test.FacingTile, Is.TypeOf<Outside>());
     }
 
     [Test]
