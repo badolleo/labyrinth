@@ -102,7 +102,15 @@ public class LabyrinthCrawlerTest
     [Test]
     public void FacingSouthOnBottomTileReturnsOutside()
     {
-        Assert.That(false);
+        var test = newCrawlerFor("""
+            +--+
+            |  |
+            +X-+
+            """);
+        test.Direction.TurnLeft();
+        test.Direction.TurnLeft(); // turning 2 times to face south
+
+        Assert.That(test.FacingTile, Is.TypeOf<Outside>());
     }
     #endregion
 
