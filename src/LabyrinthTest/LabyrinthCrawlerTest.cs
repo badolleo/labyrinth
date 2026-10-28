@@ -7,17 +7,22 @@ namespace LabyrinthTest.Crawl;
 [TestFixture(Description = "Integration test for the crawler implementation in the labyrinth")]
 public class LabyrinthCrawlerTest
 {
+
+    private static ICrawler newCrawlerFor(string asciiMap)
+    {
+        var laby = new Labyrinth.Labyrinth(new AsciiParser(asciiMap));
+        return laby.NewCrawler();
+    }
+
     #region Initialization
     [Test]
     public void InitWithCenteredX()
     {
-        var laby = new Labyrinth.Labyrinth(new AsciiParser("""
+        var test = newCrawlerFor("""
                 +--+
                 | x|
                 +--+
-                """));
-
-        var test = laby.NewCrawler();
+                """);
 
         using var all = Assert.EnterMultipleScope();
 
@@ -30,14 +35,13 @@ public class LabyrinthCrawlerTest
     [Test]
     public void InitWithMultipleXUsesLastOne()
     {
-        var laby = new Labyrinth.Labyrinth(new AsciiParser("""
+        var test = newCrawlerFor("""
             +--+
             |x |
             | x|
             +--+
-            """));
-        var test = laby.NewCrawler();
-
+            """);
+            
         using var all = Assert.EnterMultipleScope();
 
         Assert.That(test.X, Is.EqualTo(2));
