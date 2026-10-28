@@ -15,7 +15,7 @@ namespace Labyrinth.Crawl
         {
             X = x;
             Y = y;
-            Direction = direction;
+            Direction = (Direction)direction.Clone();
             _tiles = tiles;
         }
 
@@ -41,7 +41,7 @@ namespace Labyrinth.Crawl
             throw new NotImplementedException();
         }
 
-        private bool IsOutside(int x, int y) => x < 0 || y < 0 || x >= _tiles.GetLength(0);
+        private bool IsOutside(int x, int y) => x < 0 || y < 0 || x >= _tiles.GetLength(0) || y >= _tiles.GetLength(1);
 
     }
 }
