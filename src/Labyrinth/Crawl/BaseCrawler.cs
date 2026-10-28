@@ -41,7 +41,7 @@ namespace Labyrinth.Crawl
             throw new NotImplementedException();
         }
 
-        private static bool IsOutside(int x, int y) => x < 0 || y < 0;
+        private bool IsOutside(int x, int y) => x < 0 || y < 0 || x >= _tiles.GetLength(0);
 
     }
 }

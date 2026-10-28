@@ -89,7 +89,7 @@ public class LabyrinthCrawlerTest
     {
         var test = newCrawlerFor("""
             +--+
-            x  |
+            |  x
             +--+
             """);
         test.Direction.TurnLeft();
