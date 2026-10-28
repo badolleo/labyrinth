@@ -30,11 +30,9 @@ namespace Labyrinth.Crawl
                 int facingY = Y + Direction.DeltaY;
                 int facingX = X + Direction.DeltaX;
 
-                if (facingY < 0 || facingX < 0)
-                {
-                    return Outside.Singleton;
-                }
-                return _tiles[facingX, facingY];
+                return IsOutside(facingX, facingY)
+                    ? Outside.Singleton
+                    : _tiles[facingX, facingY];
             }
         }
 
@@ -42,6 +40,8 @@ namespace Labyrinth.Crawl
         {
             throw new NotImplementedException();
         }
+
+        private static bool IsOutside(int x, int y) => x < 0 || y < 0;
 
     }
 }
