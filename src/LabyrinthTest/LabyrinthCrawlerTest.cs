@@ -41,7 +41,7 @@ public class LabyrinthCrawlerTest
             | x|
             +--+
             """);
-            
+
         using var all = Assert.EnterMultipleScope();
 
         Assert.That(test.X, Is.EqualTo(2));
@@ -51,7 +51,12 @@ public class LabyrinthCrawlerTest
     [Test]
     public void InitWithNoXThrowsArgumentException()
     {
-        Assert.That(false);
+        Assert.Throws<ArgumentException>(() => newCrawlerFor("""
+            +--+
+            |  |
+            |  |
+            +--+
+            """));
     }
     #endregion
 
