@@ -38,7 +38,10 @@ namespace Labyrinth.Crawl
 
         public Inventory Walk()
         {
-            throw new NotImplementedException();
+            var inventory = FacingTile.Pass();
+            X += Direction.DeltaX;
+            Y += Direction.DeltaY;
+            return inventory;
         }
 
         private bool IsOutside(int x, int y) => x < 0 || y < 0 || x >= _tiles.GetLength(0) || y >= _tiles.GetLength(1);
