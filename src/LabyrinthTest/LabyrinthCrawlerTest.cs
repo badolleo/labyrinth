@@ -14,15 +14,57 @@ public class LabyrinthCrawlerTest
         return laby.NewCrawler();
     }
 
+    [Test]
+    public void TurningOneCrawlerDoesNotTurnAnotherOnDifferentLabyrinths()
+    {
+        var crawler1 = newCrawlerFor("""
+            +--+
+            |x |
+            +--+
+            """);
+        
+        var crawler2 = newCrawlerFor("""
+            +--+
+            | x|
+            +--+
+            """);
+        
+        Assert.That(crawler1.Direction, Is.EqualTo(Direction.North));
+        Assert.That(crawler2.Direction, Is.EqualTo(Direction.North));
+
+        crawler1.Direction.TurnLeft();
+
+        Assert.That(crawler1.Direction, Is.EqualTo(Direction.West));
+        Assert.That(crawler2.Direction, Is.EqualTo(Direction.North));
+    }
+
+    [Test]
+    public void TurningOneCrawlerDoesNotTurnAnotherOnSameLabyrinth()
+    {
+        var laby = new Labyrinth.Labyrinth(new AsciiParser("""
+            +--+
+            |x |
+            +--+
+            """));
+        var crawler1 = laby.NewCrawler();
+        var crawler2 = laby.NewCrawler();
+
+        crawler1.Direction.TurnLeft();
+
+        using var all = Assert.EnterMultipleScope();
+        Assert.That(crawler1.Direction, Is.EqualTo(Direction.West));
+        Assert.That(crawler2.Direction, Is.EqualTo(Direction.North));
+    }
+
     #region Initialization
     [Test]
     public void InitWithCenteredX()
     {
         var test = newCrawlerFor("""
-                +--+
-                | x|
-                +--+
-                """);
+            +--+
+            | x|
+            +--+
+            """);
 
         using var all = Assert.EnterMultipleScope();
 
@@ -65,10 +107,10 @@ public class LabyrinthCrawlerTest
     public void FacingNorthOnUpperTileReturnsOutside()
     {
         var test = newCrawlerFor("""
-                +x-+
-                |  |
-                +--+
-                """);
+            +x-+
+            |  |
+            +--+
+            """);
         Assert.That(test.FacingTile, Is.TypeOf<Outside>());
     }
 
@@ -76,10 +118,10 @@ public class LabyrinthCrawlerTest
     public void FacingWestOnFarLeftTileReturnsOutside()
     {
         var test = newCrawlerFor("""
-                +--+
-                x  |
-                +--+
-                """);
+            +--+
+            x  |
+            +--+
+            """);
         test.Direction.TurnLeft();
         Assert.That(test.FacingTile, Is.TypeOf<Outside>());
     }
@@ -105,7 +147,7 @@ public class LabyrinthCrawlerTest
         var test = newCrawlerFor("""
             +--+
             |  |
-            +X-+
+            +x-+
             """);
         test.Direction.TurnLeft();
         test.Direction.TurnLeft(); // turning 2 times to face south
