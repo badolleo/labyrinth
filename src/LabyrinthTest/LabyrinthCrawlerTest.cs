@@ -160,7 +160,20 @@ public class LabyrinthCrawlerTest
     [Test]
     public void TurnLeftFacesWestTile()
     {
-        Assert.That(false);
+        var test = newCrawlerFor("""
+            + -+
+            |x |
+            +--+
+            """); // By default, the crawler is facing north so he is facing a room.
+        
+        Assert.That(test.FacingTile, Is.TypeOf<Room>());
+
+        test.Direction.TurnLeft(); // we turn the crawler 1 time to the left the he will face a wall
+        Assert.That(test.FacingTile, Is.TypeOf<Wall>());
+
+        test.Direction.TurnLeft();
+        test.Direction.TurnLeft();
+        Assert.That(test.FacingTile, Is.TypeOf<Room>());
     }
 
     [Test]
