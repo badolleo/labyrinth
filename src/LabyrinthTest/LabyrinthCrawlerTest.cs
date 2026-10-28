@@ -220,7 +220,19 @@ public class LabyrinthCrawlerTest
     [Test]
     public void WalkOnNonTraversableTileThrowsInvalidOperationException()
     {
-        Assert.That(false);
+        var test = newCrawlerFor("""
+            +--+
+            |x |
+            |  |
+            +--+
+            """);
+
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            test.Walk();
+        });
+        
+
     }
     #endregion
 
