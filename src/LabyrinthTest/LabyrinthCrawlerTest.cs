@@ -15,6 +15,9 @@ public class LabyrinthCrawlerTest
         return laby.NewCrawler();
     }
 
+    private static void GiveFakeKey(ICrawler crawler) =>
+        crawler.Inventory.MoveItemFrom(new MyInventory(new Key()));
+
     [Test]
     public void TurningOneCrawlerDoesNotTurnAnotherOnDifferentLabyrinths()
     {
@@ -258,11 +261,8 @@ public class LabyrinthCrawlerTest
             | x/
             +--+
             """);
-        
-        // generate a fake key
-        var fakeInventory = new MyInventory(new Key());
 
-        test.Inventory.MoveItemFrom(fakeInventory);
+        GiveFakeKey(test); // give a fake key to the crawler
         test.Direction.TurnRight();
 
         test.Walk(); // go to the door and try to open it with a fake key
