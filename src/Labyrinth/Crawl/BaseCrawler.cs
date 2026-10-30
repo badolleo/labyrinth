@@ -41,19 +41,26 @@ namespace Labyrinth.Crawl
 
         public Inventory Walk()
         {
-            var inventory = FacingTile.Pass();
+            if (FacingTile is Door door && door.IsLocked && Inventory.HasItem)
+            {
+                door.Open(Inventory);
+            }
+
+            try
+            {
+                
+            var inventory = FacingTile.Pass();   // lève une exception si la porte est restée fermée
             X += Direction.DeltaX;
             Y += Direction.DeltaY;
             return inventory;
-        }
-
-        public bool tryOpenDoor(Items.Inventory key)
-        {
-            throw new NotImplementedException();
+            }
+            catch (InvalidOperationException)
+            {
+                return _tiles[X, Y].Pass(); // return the inventory of the current tile if the door is locked and cannot be opened
+            }
+        
         }
 
         private bool IsOutside(int x, int y) => x < 0 || y < 0 || x >= _tiles.GetLength(0) || y >= _tiles.GetLength(1);
-    
-    
     }
 }

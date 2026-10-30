@@ -255,17 +255,19 @@ public class LabyrinthCrawlerTest
         var test = newCrawlerFor("""
             +--+
             |k |
-            |x /
+            | x/
             +--+
             """);
         
         // generate a fake key
         var fakeInventory = new MyInventory(new Key());
+
         test.Inventory.MoveItemFrom(fakeInventory);
         test.Direction.TurnRight();
+
         test.Walk(); // go to the door and try to open it with a fake key
         Assert.That(test.FacingTile, Is.TypeOf<Door>());
-        Assert.That(test.X, Is.EqualTo(1));
+        Assert.That(test.X, Is.EqualTo(2));
         Assert.That(test.Y, Is.EqualTo(2));
         Assert.That(test.Inventory.HasItem, Is.True); // the fake key is still in the inventory because it did not open the door
     }
